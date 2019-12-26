@@ -65,4 +65,15 @@ public class UserController {
         return userService.queryColByUsernameAndName(username, name);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/userList", method = RequestMethod.POST)
+    public ResponseApi userList(String username, String name) {
+        return userService.userList(username, name);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/sqlQuery", method = RequestMethod.POST)
+    public ResponseApi sqlQuery(String username, String name) {
+        return userService.sqlQuery(username, name);
+    }
 }

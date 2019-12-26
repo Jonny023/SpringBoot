@@ -23,4 +23,8 @@ public interface IUserService {
     ResponseApi queryUsernames();
 
     ResponseApi queryColByUsernameAndName(String username, String name);
+
+    ResponseApi userList(String username, String name);
+
+    ResponseApi sqlQuery(String username, String name);
 }
