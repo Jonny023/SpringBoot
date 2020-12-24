@@ -1,26 +1,18 @@
-package com.example.demo.entity;
+package org.core.acid.entity;
 
-/**
- * @Author Lee
- * @Description
- * @Date 2019年06月14日 21:33
- */
+import javax.persistence.*;
+
+@Entity
+@Table(name = "t_user")
 public class User {
 
     private Long id;
-
     private String username;
-
     private String password;
+    private String nickname;
 
-    public User() {}
-
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -45,12 +37,21 @@ public class User {
         this.password = password;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
                 '}';
     }
 }
