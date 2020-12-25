@@ -1,8 +1,8 @@
-package org.core.acid.controller;
+package org.core.acid.system.controller;
 
 import org.core.acid.base.Page;
-import org.core.acid.entity.User;
-import org.core.acid.service.IUserService;
+import org.core.acid.system.entity.User;
+import org.core.acid.system.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

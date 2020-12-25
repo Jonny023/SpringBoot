@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"org.core.acid.repository"})
+@EnableJpaRepositories(basePackages = {"org.core.acid.system.repository"})
 public class AcidApplication {
 
     public static void main(String[] args) {

@@ -1,11 +1,11 @@
-package org.core.acid.service;
+package org.core.acid.system.service;
 
 import com.querydsl.core.QueryResults;
 import org.core.acid.base.AbstractService;
 import org.core.acid.base.Page;
-import org.core.acid.entity.QUser;
-import org.core.acid.entity.User;
-import org.core.acid.repository.UserRepository;
+import org.core.acid.system.entity.QUser;
+import org.core.acid.system.entity.User;
+import org.core.acid.system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

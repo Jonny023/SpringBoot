@@ -1,4 +1,4 @@
-package org.core.acid.entity;
+package org.core.acid.system.entity;
 
 import javax.persistence.*;
 

@@ -1,8 +1,8 @@
-package org.core.acid.service;
+package org.core.acid.system.service;
 
 
 import org.core.acid.base.Page;
-import org.core.acid.entity.User;
+import org.core.acid.system.entity.User;
 
 public interface IUserService {
 

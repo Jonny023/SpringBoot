@@ -1,7 +1,7 @@
-package org.core.acid.repository;
+package org.core.acid.system.repository;
 
 import org.core.acid.base.BaseRepository;
-import org.core.acid.entity.User;
+import org.core.acid.system.entity.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
