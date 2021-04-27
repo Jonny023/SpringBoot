@@ -12,7 +12,7 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 
 /**
- * @author: e-lijing6
+ * @author: Jonny
  * @description: 扁平化处理后写入新的topic
  * @date:created in 2021/4/26 13:29
  * @modificed by:

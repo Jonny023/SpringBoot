@@ -12,7 +12,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 
 /**
- * @author: e-lijing6
+ * @author: Jonny
  * @description: 求和
  * @date:created in 2021/4/26 9:37
  * @modificed by:

@@ -9,7 +9,7 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 
 /**
- * @author: e-lijing6
+ * @author: Jonny
  * @description: 从一个topic复制到另一个topic
  * @date:created in 2021/4/26 9:07
  * @modificed by:

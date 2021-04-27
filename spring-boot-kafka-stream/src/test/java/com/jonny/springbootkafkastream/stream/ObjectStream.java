@@ -14,7 +14,7 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 
 /**
- * @author: e-lijing6
+ * @author: Jonny
  * @description:
  * @date:created in 2021/4/26 16:03
  * @modificed by:

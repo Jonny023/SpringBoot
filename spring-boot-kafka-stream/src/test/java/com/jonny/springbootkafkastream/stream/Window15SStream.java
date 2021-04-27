@@ -16,7 +16,7 @@ import org.apache.kafka.streams.kstream.SessionWindows;
 import org.apache.kafka.streams.kstream.Windowed;
 
 /**
- * @author: e-lijing6
+ * @author: Jonny
  * @description: win_in_15s 15秒内的wordcount，结果写入win_out_15s
  * @date:created in 2021/4/26 13:11
  * @modificed by:

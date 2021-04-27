@@ -16,7 +16,7 @@ import org.apache.kafka.streams.kstream.TimeWindows;
 import org.apache.kafka.streams.kstream.Windowed;
 
 /**
- * @author: e-lijing6
+ * @author: Jonny
  * @description: 每隔5秒钟输出一次过去5秒内win_5s_in里的wordcount，结果写入到win_5s_out
  * @date:created in 2021/4/26 11:12
  * @modificed by:

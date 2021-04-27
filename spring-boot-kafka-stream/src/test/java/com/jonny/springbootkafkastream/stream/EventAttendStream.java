@@ -12,7 +12,7 @@ import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 
 /**
- * @author: e-lijing6
+ * @author: Jonny
  * @description: 将topic的多列扁平化处理写入新的topic
  * @date:created in 2021/4/26 13:40
  * @modificed by:

@@ -13,7 +13,7 @@ import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KTable;
 
 /**
- * @author: e-lijing6
+ * @author: Jonny
  * @description: 按键统计
  * @date:created in 2021/4/26 9:30
  * @modificed by:
