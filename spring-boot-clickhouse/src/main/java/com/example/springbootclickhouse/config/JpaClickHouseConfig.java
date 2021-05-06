@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
@@ -19,8 +18,9 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @Configuration
-@EntityScan(basePackages = "com.example.springbootclickhouse.entity")
+//@EntityScan(basePackages = "com.example.springbootclickhouse.entity")
 @EnableJpaRepositories(
+//        basePackages = "${spring.jpa.repository}", //可通过spEL表达式动态配置
         basePackages = "com.example.springbootclickhouse.repository",
         entityManagerFactoryRef = "ckEntityManagerFactoryBean",
         transactionManagerRef = "ckTransactionManager",
