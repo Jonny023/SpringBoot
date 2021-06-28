@@ -231,3 +231,7 @@ public class JPAQueryFactoryConfig {
 ```
 
 ### jpa查询返回值调用set方法会触发update，尽量不要直接修改返回的对象
+
+# 特别注意！！！！！！！！！！！！！！！！！！！！！！
+
+- 创建`EntityManagery`一定要用`SharedEntityManagerCreator.createSharedEntityManager(Objects.requireNonNull(entityManagerFactoryPrimary(builder).getObject()));`创建，不然直接修改数据库数据程序查询出来还是修改之前的数据
