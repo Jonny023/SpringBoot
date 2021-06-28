@@ -32,3 +32,60 @@
     }
   ```
   > 如上接口测试到数据库的时间变成了`2020-11-21 06:22:22`，未配置jackson时区多了8小时
+
+
+
+# 多数据源初始数分开配置
+
+```yml
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        druid:
+          master:
+            driver-class-name: com.mysql.jdbc.Driver
+            url: jdbc:mysql://localhost:3306/stat?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
+            username: root
+            password: root
+            initial-size: 2
+            min-idle: 5
+            max-active: 10
+            max-wait: 5000
+            validationQuery: SELECT 1
+            test-on-borrow: false
+            test-while-idle: true
+            time-between-eviction-runs-millis: 18800
+          ck:
+            driver-class-name: ru.yandex.clickhouse.ClickHouseDriver
+            url: jdbc:clickhouse://localhost:9090/xxx
+            username: root
+            password: root
+            initial-size: 2
+            min-idle: 5
+            max-active: 10
+            max-wait: 5000
+            validationQuery: SELECT 1
+            test-on-borrow: false
+            test-while-idle: true
+            time-between-eviction-runs-millis: 18800
+
+          web-stat-filter:
+            enabled: true
+            exclusions: js,gif,jpg,png,css,ico,/druid/*
+          stat-view-servlet:
+            enabled: true
+            login-username: root
+            login-password: 86ac813e-7ddc-44c8-9ead-467480d75fe5
+
+      jpa:
+        hibernate:
+          ddl-auto: none # update
+        show-sql: false
+        open-in-view: false
+        databasePlatform: org.hibernate.dialect.MySQL57Dialect
+        properties:
+          hibernate:
+            # default_schema: public
+            format_sql: true
+```
+
