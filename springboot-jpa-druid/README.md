@@ -1,4 +1,4 @@
-# Sringboot集成jpa和druid多数据源测试连接池
+# Sringboot集成jpa和druid多数据源测试连接池填坑
 
 ## 时区问题
 
@@ -89,3 +89,145 @@ spring:
             format_sql: true
 ```
 
+# QueryDSL缓存问题
+
+[参考](https://www.jianshu.com/p/0312c040d407)
+
+> 通过工具直连数据库修改数据，通过querydsl查询出来的数据还是修改前的数据，原因：JPAQueryFactory的session一直是同一个，而JPA执行完后又没有通知JPAQueryFactory的session
+
+### 主数据源
+
+> 千万不要用`return entityManagerFactoryPrimary(builder).getObject().createEntityManager();`创建bean，要用`return SharedEntityManagerCreator.createSharedEntityManager(Objects.requireNonNull(entityManagerFactoryPrimary(builder).getObject()));`创建，否则通过querydsl查询会有缓存，直接修改数据库数据查询出来还是之前的数据
+
+```java
+package config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.SharedEntityManagerCreator;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.sql.DataSource;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+* 
+* 默认数据源
+* @author: 
+* @author: Jonny
+* @date: 2021/5/6 14:04
+* @return: 
+* @throws: java.lang.Exception
+* @modificed by:
+*/
+@Configuration
+@EnableJpaRepositories(
+        basePackages = "${spring.jpa.repository}",
+        entityManagerFactoryRef = "entityManagerFactoryPrimary",
+        transactionManagerRef = "transactionManagerPrimary"
+)
+@EnableTransactionManagement
+public class MasterDataSourceConfig {
+
+    @Value("${spring.jpa.entity}")
+    private String entityBasePackage;
+
+    @Lazy
+    @Resource(name = "primaryDataSource")
+    private DataSource dataSource;
+
+    // JPA扩展配置
+    @Resource
+    private JpaProperties jpaProperties;
+
+    @Resource
+    private HibernateProperties hibernateProperties;
+
+    /**
+     * 配置第二个实体管理工厂的bean
+     *
+     * @return
+     */
+    @Primary
+    @Bean(name = "entityManagerFactoryPrimary")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryPrimary(EntityManagerFactoryBuilder builder) {
+        return builder.dataSource(dataSource)
+                .properties(jpaProperties.getProperties())
+                .properties(getVendorProperties())
+                .packages(entityBasePackage)
+                .persistenceUnit("primaryPersistenceUnit")
+                .build();
+    }
+
+    private Map<String, Object> getVendorProperties() {
+        return hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
+    }
+
+    /**
+     * EntityManager不过解释，用过jpa的应该都了解
+     *
+     * @return
+     */
+    @Primary
+    @Bean(name = "entityManagerPrimary")
+    public EntityManager entityManager(EntityManagerFactoryBuilder builder) {
+        return SharedEntityManagerCreator.createSharedEntityManager(Objects.requireNonNull(entityManagerFactoryPrimary(builder).getObject()));
+    }
+
+    /**
+     * jpa事务管理
+     *
+     * @return
+     */
+    @Primary
+    @Bean(name = "transactionManagerPrimary")
+    public PlatformTransactionManager transactionManagerPrimary(EntityManagerFactoryBuilder builder) {
+        return new JpaTransactionManager(entityManagerFactoryPrimary(builder).getObject());
+    }
+}
+```
+
+### querydsl查询工厂配置类
+
+```java
+package config;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+import javax.persistence.EntityManager;
+
+/**
+ * @description:
+ * @author: Jonny
+ * @date: 2021-02-25
+ */
+@Configuration
+public class JPAQueryFactoryConfig {
+
+    @Bean
+    @Primary
+    public JPAQueryFactory jpaQuery(EntityManager entityManager) {
+        return new JPAQueryFactory(entityManager);
+    }
+
+}
+```
+
+### jpa查询返回值调用set方法会触发update，尽量不要直接修改返回的对象
