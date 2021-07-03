@@ -121,3 +121,7 @@
     └─index.js
 
 ```
+
+# 注意！！！
+
+通过idea运行时每次都要先编译：执行`mvn clean package`或者`mvn clean compile`都可以，否则编译的文件不是最新的
