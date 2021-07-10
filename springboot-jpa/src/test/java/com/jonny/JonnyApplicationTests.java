@@ -18,7 +18,9 @@ class JonnyApplicationTests {
     void exe() {
         Student stu = new Student();
         stu.setId(1L);
-        stu.setStuName("张三12");
+        stu.setStuName("张三121");
+        stu.setAddress(null);
+//        stu.setAddress("重庆");
         studentService.update(stu);
     }
 
