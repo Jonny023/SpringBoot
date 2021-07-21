@@ -1,7 +1,7 @@
 spring:
   kafka:
-    bootstrap-servers: 10.113.74.45:9092,10.113.74.45:2181
-#    bootstrap-servers: loaclhost:9092,localhost:2181
+    bootstrap-servers: 10.113.74.45:9092
+#    bootstrap-servers: loaclhost:9092
     producer:
       retries: 0
       batch-size: 10240
