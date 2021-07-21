@@ -20,4 +20,5 @@ public class Student {
     private Long id;
     private String stuName;
     private char sex;
+    private String address;
 }

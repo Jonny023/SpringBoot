@@ -11,12 +11,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.SharedEntityManagerCreator;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.util.Map;
+import java.util.Objects;
 
 @Configuration
 @EnableTransactionManagement
@@ -38,7 +40,7 @@ public class SecondJpaConfig {
 
     @Bean(name = "secondEntityManager")
     public EntityManager entityManager(EntityManagerFactoryBuilder builder) {
-        return entityManagerFactorySecond(builder).getObject().createEntityManager();
+        return SharedEntityManagerCreator.createSharedEntityManager(Objects.requireNonNull(entityManagerFactorySecond(builder).getObject()));
     }
 
     @Bean(name = "entityManagerFactorySecond")
