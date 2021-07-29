@@ -16,6 +16,6 @@ public class HelloJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String currentDate = formatter.format(LocalDateTime.now());
-        log.info("HelloJob run:{}", currentDate);
+        log.info("HelloJob running:{}", currentDate);
     }
 }
