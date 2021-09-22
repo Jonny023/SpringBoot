@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+
+    # 使用 alibaba druid 连接池、监控
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      primary :
+        url: jdbc:mysql://localhost:3306/jpa?useUnicode=true&CharSet=utf8mb4&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&autoReconnectForPools=true&rewriteBatchedStatements=true&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+        username: root
+        password: root
+      secondary :
+#        url: jdbc:mysql://localhost:3306/jpa_slave?useUnicode=true&CharSet=utf8mb4&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&autoReconnectForPools=true&rewriteBatchedStatements=true&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://localhost:3306/jpa_slave?useUnicode=true&CharSet=utf8mb4&characterEncoding=utf8&characterSetResults=utf8&rewriteBatchedStatements=true&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: root
+      initial-size: 2
+      min-idle: 5
+      max-active: 10
+      max-wait: 5000
+      validation-query: SELECT 1
+      test-on-borrow: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 18800
+      web-stat-filter:
+        enabled: true
+        exclusions: js,gif,jpg,png,css,ico,/druid/*
+      stat-view-servlet:
+        enabled: true
+        login-username: root
+        login-password: 123456
+  jpa:
+    hibernate:
+      ddlAuto: update
+    databasePlatform: org.hibernate.dialect.MySQL5InnoDBDialect
+    showSql: true
+  jackson:
+    time-zone: GMT+8

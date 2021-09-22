@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: rocketmq-app
+  profiles:
+    include: rocketmq
+server:
+  port: 888

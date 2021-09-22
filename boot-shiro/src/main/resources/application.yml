@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shiro?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+
+shiro:
+  jwt:
+    secret: KsAAABUXYzDFGKwCS
+    expire: 86400  # 1天
+
+shiro-redis:
+  redis-manager:
+    host: 127.0.0.1
+    database: 10

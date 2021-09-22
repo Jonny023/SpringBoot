@@ -1,0 +1,41 @@
+group 'org.example.app'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+    baseName = 'org.example.app'
+    version = '0.0.1'
+    manifest {
+        attributes "Manifest-Version": 1.0,
+                'Main-Class': 'org.example.App'
+    }
+}
+
+dependencies {
+    implementation project(":util")
+    implementation files("app/build/libs/app-1.0-plain.jar")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+task cleanBuild() {
+    println "delete build dir."
+    delete 'build'
+    println "clean finish."
+}
+
+task copyEnv(type: Copy) {
+    from "src/main/env/" + System.properties['env']
+    into "src/main/resources"
+    dependsOn 'cleanBuild'
+}
+
+task buildJar(type: Copy) {
+    from "src/main/env/" + System.properties['env']
+    into "build/resources/main"
+    dependsOn 'copyEnv'
+}
+
+bootJar.dependsOn buildJar

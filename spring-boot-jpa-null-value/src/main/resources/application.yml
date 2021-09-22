@@ -1,0 +1,24 @@
+spring:
+  jackson:
+    time-zone: GMT+8
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/demo?useSSL=false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    #      naming:
+#        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+#    properties:
+#      hibernate:
+#        jdbc:
+#          batch_size: 500
+#          batch_versioned_data: true
+#        order_inserts: true
+#        order_updates: true

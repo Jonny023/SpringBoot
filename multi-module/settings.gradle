@@ -1,0 +1,5 @@
+rootProject.name = 'multi-module'
+include 'app'
+include 'util'
+include 'user'
+

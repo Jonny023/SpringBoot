@@ -1,0 +1,5 @@
+server:
+  port: 803
+spring:
+  application:
+    name: app

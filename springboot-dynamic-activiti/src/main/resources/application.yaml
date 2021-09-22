@@ -1,0 +1,12 @@
+spring:
+  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/activiti?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT&useSSL=false
+    username: root
+    password: root
+  #不自动部署
+  activiti:
+    check-process-definitions: false
+  main:
+    allow-bean-definition-overriding: true
