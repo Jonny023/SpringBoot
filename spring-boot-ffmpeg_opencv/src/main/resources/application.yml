@@ -1,0 +1,40 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /
+spring:
+  profiles:
+    active: @environment@
+
+  # 数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 2
+      min-idle: 5
+      max-active: 10
+      max-wait: 5000
+      validation-query: SELECT 1
+      test-on-borrow: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 18800
+
+  # redis配置
+  redis:
+    timeout: 5000
+    jedis:
+      pool:
+        max-active: 50
+        max-idle: 20
+        min-idle: 5
+        max-wait: -1
+
+  mvc:
+    servlet:
+      load-on-startup: 1
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false

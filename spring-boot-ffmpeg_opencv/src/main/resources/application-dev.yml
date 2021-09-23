@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Shanghai&useAffectedRows=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
+      username: root
+      password: 123456
+
+  # redis配置
+  redis:
+    database: 0
+    host: localhost
+    password:
+    port: 6379
+
+# Screenshot path
+image:
+  path: c:/img
+media:
+  host: 10.113.75.118
+
+web:
+  #前端部署路径
+  resource-locations: file:D://dist/
