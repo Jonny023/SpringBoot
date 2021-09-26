@@ -1,10 +1,11 @@
 package com.example.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.base.BasePageRequestVO;
 import com.example.base.ResultPageVO;
 import com.example.base.ResultVO;
 import com.example.base.dto.UserDTO;
 import com.example.domain.entity.User;
-import com.example.base.BasePageRequestVO;
 import com.example.domain.mapper.UserMapper;
 import com.example.service.IUserService;
 import io.swagger.annotations.Api;
@@ -33,18 +34,18 @@ public class UserController {
     private UserMapper userMapper;
 
     @PostMapping("/getUser")
-    public User getUser(){
+    public User getUser() {
         return userService.getById(1);
     }
 
     @PostMapping("/findUsername")
-    public ResultVO<UserDTO> findUsername(String username){
+    public ResultVO<UserDTO> findUsername(String username) {
         return ResultVO.ok(userMapper.queryUserByUsername(username));
     }
 
     @PostMapping("/pageList")
-    public ResultPageVO<User> list(BasePageRequestVO param){
-        return ResultPageVO.ok(userService.listByPage(param));
+    public ResultPageVO<User> list(BasePageRequestVO param) {
+        return ResultPageVO.ok(userService.listByPage(param, new QueryWrapper<>()));
     }
 
 }

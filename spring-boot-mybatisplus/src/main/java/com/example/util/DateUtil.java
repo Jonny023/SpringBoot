@@ -1,18 +1,22 @@
 package com.example.util;
 
-import com.example.exception.BizException;
 import com.example.base.ResultEnum;
+import com.example.exception.BizException;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Objects;
 
 public class DateUtil {
 
     private static DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final String LOCAL_DATE_FORMAT = "yyyy-MM-dd";
+    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(LOCAL_DATE_FORMAT);
     private static DateTimeFormatter DATETIME_STR_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
     private static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("H:m");
 
@@ -22,6 +26,30 @@ public class DateUtil {
     public static String date2String(Date date) {
         LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         return DATETIME_FORMATTER.format(localDateTime);
+    }
+
+    public static LocalDateTime str2LocalDateTime(String date) {
+        LocalDateTime localDateTime;
+        try {
+            localDateTime = LocalDateTime.parse(date, DATE_FORMATTER);
+        } catch (Exception ex) {
+            LocalDate localDate = parseLocalDate(date, LOCAL_DATE_FORMAT);
+            localDateTime = Objects.isNull(localDate) ? null : localDate.atStartOfDay();
+        }
+        return localDateTime;
+    }
+
+    private static LocalDate parseLocalDate(String str, String pattern) {
+        if (!StringUtils.hasText(str)) {
+            return null;
+        }
+        LocalDate localDate = null;
+        try {
+            localDate = LocalDate.parse(str, DateTimeFormatter.ofPattern(pattern));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return localDate;
     }
 
     public static Data string2Time(String time) {

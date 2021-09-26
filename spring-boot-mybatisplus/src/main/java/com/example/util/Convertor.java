@@ -1,5 +1,8 @@
 package com.example.util;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +89,16 @@ public final class Convertor {
             e.printStackTrace();
         }
         return bean;
+    }
+
+    public static <S, T> IPage<T> page(IPage<S> page, Supplier<T> target) {
+        IPage<T> resultPage = new Page();
+        resultPage.setCurrent(page.getCurrent());
+        resultPage.setSize(page.getSize());
+        resultPage.setPages(page.getPages());
+        resultPage.setTotal(page.getTotal());
+        resultPage.setRecords(Convertor.copyListProperties(page.getRecords(), target));
+        return resultPage;
     }
 
 }
