@@ -1,9 +1,11 @@
 package com.example.base;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ResultPageVO<T> extends ResultVO<List<T>> {
 
@@ -24,6 +26,7 @@ public class ResultPageVO<T> extends ResultVO<List<T>> {
      * @return
      */
     public static <T> ResultPageVO<T> ok(IPage<T> page) {
+        page = Optional.ofNullable(page).orElse(new Page<>());
         ResultPageVO resultPageVO = new ResultPageVO();
         resultPageVO.setCode(ResultEnum.SUCCESS.getCode());
         resultPageVO.setMsg(ResultEnum.SUCCESS.getMsg());
