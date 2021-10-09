@@ -56,3 +56,13 @@ public IPage<MouldListResponseVO> listPage(MouldListRequestVO param) {
     return baseMapper.listPage(page, param);
 }
 ```
+
+* lambda根据日期查询最新一条
+
+```java
+
+Order order = this.getOne(new LambdaQueryWrapper<Order>()
+    .ge(Order::getCreateTime, todayStart)
+    .le(Order::getCreateTime, todayEnd)
+    .orderByDesc(Order::getOrderSn).last("LIMIT 1"));
+```
