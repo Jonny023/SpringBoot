@@ -36,6 +36,8 @@ public interface MouldMapper extends BaseMapper<Mould> {
 
 * serviceImpl
 
+> 如果想要不分页，可以把page的size设置为-1，负数也可以
+
 ```java
 @Override
 public IPage<MouldListResponseVO> listPage(MouldListRequestVO param) {
