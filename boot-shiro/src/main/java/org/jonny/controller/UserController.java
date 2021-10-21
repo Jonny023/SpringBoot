@@ -1,5 +1,6 @@
 package org.jonny.controller;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jonny.service.IUserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +17,13 @@ public class UserController {
     protected IUserService userService;
 
     @GetMapping("/{id}")
+    @RequiresPermissions("user:get")
     public Object test(@PathVariable("id") Long id) {
         return userService.getById(id);
     }
 
     @GetMapping("/list")
+    @RequiresPermissions("user:list")
     public Object list() {
         return userService.list();
     }

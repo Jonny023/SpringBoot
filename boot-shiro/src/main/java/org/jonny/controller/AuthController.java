@@ -26,11 +26,11 @@ public class AuthController {
     @Resource
     private UserService userService;
 
-    @CrossOrigin
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         User user = userService.getOne(new QueryWrapper<User>().eq("username", loginDTO.getUsername()));
         Assert.notNull(user, "用户不存在");
+        System.out.println(SecureUtil.md5(loginDTO.getPassword()));
         if(!user.getPassword().equals(SecureUtil.md5(loginDTO.getPassword()))) {
             return Result.fail("密码错误！");
         }

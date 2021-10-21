@@ -12,15 +12,17 @@ import org.jonny.shiro.token.JwtToken;
 import org.jonny.utils.JwtUtils;
 import org.jonny.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 @Slf4j
-@Component
 public class AccountRealm extends AuthorizingRealm {
 
-    @Autowired
+    @Resource
     private JwtUtils jwtUtils;
-    @Autowired
+    @Resource
     private UserService userService;
 
     @Override

@@ -43,6 +43,13 @@ public class Result implements Serializable {
         return result;
     }
 
+    public static Result fail(int code, String msg) {
+        Result result = new Result();
+        result.setCode(code);
+        result.setMsg(msg);
+        return result;
+    }
+
     public static Result fail(int code, String msg, Object data) {
         Result result = new Result();
         result.setCode(code);
