@@ -96,17 +96,14 @@ public class ShiroConfig {
         securityManager.setCacheManager(cacheManager());
 
         /**
-         *  关闭shiro自带的session，详情见文档
+         *  关闭shiro自带的session，详情见文档，用redis缓存时不能设置DefaultSessionStorageEvaluator
          */
-        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
-        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+//        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+//        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+//        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+//        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+//        securityManager.setSubjectDAO(subjectDAO);
 
-        //session
-        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
-        //subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
-        //securityManager.setSubjectDAO(subjectDAO);
-
-        //redis
         return securityManager;
     }
 
