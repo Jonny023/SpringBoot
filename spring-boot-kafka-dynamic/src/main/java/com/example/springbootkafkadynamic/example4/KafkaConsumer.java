@@ -16,9 +16,9 @@ public class KafkaConsumer implements Runnable {
 
     private org.apache.kafka.clients.consumer.KafkaConsumer<String, String> consumer;
 
-    private Properties props;
+    private final Properties props;
 
-    private String topicName;
+    private final String topicName;
 
     public String getTopicName() {
         return topicName;
@@ -48,12 +48,18 @@ public class KafkaConsumer implements Runnable {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
                 for (ConsumerRecord<String, String> record : records) {
-                    LOG.info("kafka消费{}, 信息：{}", record.topic(), record.value());
+                    LOG.info("offset: {}, kafka消费{}, 信息：{}", record.offset(), record.topic(), record.value());
                 }
+
+                //手动异步提交【存在重复消费】
+                //consumer.commitAsync();
+
+                //手动同步提交【成功插入数据库，但是kafka宕机，重启服务照样会出现重复消费】
+                consumer.commitSync();
             }
         } catch (WakeupException e) {
             // ignore for shutdown
-            LOG.info("consumer's wakeup is success");
+            LOG.warn("consumer's wakeup is success");
         } finally {
             //退出应用程序前使用close方法关闭消费者，网络连接和socket也会随之关闭，并立即触发一次再均衡
             consumer.close();

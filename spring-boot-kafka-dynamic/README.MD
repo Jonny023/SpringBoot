@@ -7,6 +7,7 @@
 * [参考地址3](https://stackoverflow.com/questions/46400329/how-to-pass-topics-dynamically-to-a-kafka-listener)
 * [参考地址4【自定义】](https://blog.csdn.net/qq_35457078/article/details/88838511)
 * [参考地址5【自定义】](https://www.codeleading.com/article/80102973019/)
+* [参考地址6](https://segmentfault.com/a/1190000038154846)
 
 ## 动态订阅消费
 
@@ -76,10 +77,17 @@ public class Consumer2Controller {
 ### 4.原生客户端【推荐】
 
 ```xml
+<!-- 原生客户端 -->
 <dependency>
 	<groupId>org.apache.kafka</groupId>
 	<artifactId>kafka-clients</artifactId>
 	<version>2.3.0</version>
+</dependency>
+
+<!-- spring kafka-->
+<dependency>
+<groupId>org.springframework.kafka</groupId>
+<artifactId>spring-kafka</artifactId>
 </dependency>
 ```
 
@@ -158,9 +166,9 @@ public class KafkaConsumer implements Runnable {
 
     private org.apache.kafka.clients.consumer.KafkaConsumer<String, String> consumer;
 
-    private Properties props;
+    private final Properties props;
 
-    private String topicName;
+    private final String topicName;
 
     public String getTopicName() {
         return topicName;
@@ -190,12 +198,13 @@ public class KafkaConsumer implements Runnable {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
                 for (ConsumerRecord<String, String> record : records) {
-                    LOG.info("kafka消费{}, 信息：{}", record.topic(), record.value());
+                    LOG.info("offset: {}, kafka消费{}, 信息：{}", record.offset(), record.topic(), record.value());
                 }
+                consumer.commitAsync();
             }
         } catch (WakeupException e) {
             // ignore for shutdown
-            LOG.info("consumer's wakeup is success");
+            LOG.warn("consumer's wakeup is success");
         } finally {
             //退出应用程序前使用close方法关闭消费者，网络连接和socket也会随之关闭，并立即触发一次再均衡
             consumer.close();
@@ -265,8 +274,15 @@ public class KafkaServiceImpl implements KafkaService {
         LOG.info("订阅topic：{}", kafkaConsumerDTO.getTopicName());
         Properties props = new Properties();
 
-        props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaConsumerDTO.getBootstrapServers());
-        props.put(CommonClientConfigs.GROUP_ID_CONFIG, kafkaConsumerDTO.getGroupId());
+        //手动提交：false
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConsumerDTO.getBootstrapServers());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaConsumerDTO.getGroupId());
+
+        //earliest当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
+        //latest当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+        //none topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         if (!StringUtils.hasText(kafkaConsumerDTO.getKeyDeserializer())) {
             props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         } else {
@@ -306,9 +322,7 @@ public class KafkaServiceImpl implements KafkaService {
      * @return
      */
     private boolean alreadyExists(KafkaConsumerDTO kafkaConsumerDTO) {
-        Iterator<KafkaConsumer> it = kafkaConsumers.iterator();
-        while (it.hasNext()) {
-            KafkaConsumer kafkaConsumer = it.next();
+        for (KafkaConsumer kafkaConsumer : kafkaConsumers) {
             if (Objects.equals(kafkaConsumerDTO.getTopicName(), kafkaConsumer.getTopicName()) && Objects.equals(kafkaConsumerDTO.getBootstrapServers(), kafkaConsumer.getProps().getProperty(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG)) && Objects.equals(kafkaConsumerDTO.getGroupId(), kafkaConsumer.getProps().getProperty(CommonClientConfigs.GROUP_ID_CONFIG))) {
                 return true;
             }
@@ -367,3 +381,15 @@ public class KafkaController {
     }
 }
 ```
+
+
+### 启动消费
+http://localhost:8080/kafkaConsumer/start
+
+### 停止消费
+http://localhost:8080/kafkaConsumer/stop
+
+### 推送消息
+http://localhost:8080/producer/send
+
+## [参考地址](https://www.cnblogs.com/biehongli/p/14105658.html)
