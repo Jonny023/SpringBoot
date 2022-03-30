@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-dev:9090
+    loadbalancer:
+      retry:
+        enabled: true
+  application:
+    name: test-server
