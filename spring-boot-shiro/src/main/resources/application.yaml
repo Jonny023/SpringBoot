@@ -1,0 +1,28 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: mysql:jdbc://localhost:3306/ldap?serverTimeZone=Asia/Shanghai&useSSL=false
+    username: root
+    password: root
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+redis:
+  cache:
+    expire-seconds: 1200
+    cluster-nodes: localhost:6379
+    connection-timeout: 5000
+    password: 123456
+    so-timeout: 2000
+    max-attempts: 5 # 最大尝试次数
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+
+knife4j:
+  enable: true
