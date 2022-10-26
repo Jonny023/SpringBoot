@@ -2,6 +2,7 @@ package com.example.springbootdemo.interceptor;
 
 import com.example.springbootdemo.servlet.BodyReaderWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
@@ -18,13 +19,18 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("======================前置处理=======================");
-        BodyReaderWrapper requestWrapper = new BodyReaderWrapper(request);
-        String body = StreamUtils.copyToString(requestWrapper.getInputStream(), Charset.defaultCharset());
-        log.info("请求体1:{}", body);
 
-        String body2 = StreamUtils.copyToString(requestWrapper.getInputStream(), Charset.defaultCharset());
-        log.info("请求体2:{}", body2);
+        log.info("======================前置处理=======================");
+
+        BodyReaderWrapper requestWrapper = new BodyReaderWrapper(request);
+        if (requestWrapper.getContentType().contains(MediaType.APPLICATION_JSON_VALUE)) {
+
+            String body = StreamUtils.copyToString(requestWrapper.getInputStream(), Charset.defaultCharset());
+            log.info("请求体1:{}", body);
+
+            String body2 = StreamUtils.copyToString(requestWrapper.getInputStream(), Charset.defaultCharset());
+            log.info("请求体2:{}", body2);
+        }
 
         //校验签名、token等
         String token = request.getHeader("token");
