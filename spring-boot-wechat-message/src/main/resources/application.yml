@@ -1,14 +1,8 @@
 server:
-  port: 8001
-#wx:
-#  message:
-#    appId: wx9c18f4d6fe92e95e
-#    appSecret: 0f7c4eeabee70469b7716df914946fe9
-#    token: test
-#    aesKey:
+  port: 8080
 wx:
   message:
-    appId: wxea06ad872bb3e2a2
-    appSecret: e1557df1c83f6d12a04a273b73fcaa22
-    token: test
-    aesKey: imrDUyIoD0vB4XrAOC6LcdhsjUxcxrONWfCCYC3GmET
+    appId: xxx
+    appSecret: xxxx
+    token: xxx
+    aesKey: xxx
