@@ -1,0 +1,11 @@
+group 'org.example.user'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+    implementation project(":util")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}

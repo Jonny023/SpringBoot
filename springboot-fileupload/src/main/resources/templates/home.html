@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传页面</title>
+
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+</head>
+<body>
+<h3>layui upload上传（后台返回进度）</h3>
+<div style="margin: 15px 0px 0px 15px;">
+    <button type="button" class="layui-btn layui-btn-sm" id="addFile">
+        <i class="layui-icon">&#xe67c;</i>添加文件
+    </button>
+    <button type="button" class="layui-btn layui-btn-sm" id="upload">上传</button>
+    <div style="margin: 15px 0px 0px 0px;"></div>
+    <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="uploadProgressBar">
+        <div class="layui-progress-bar" lay-percent="0%"></div>
+    </div>
+</div>
+
+<div style="margin: 15px 0px 0px 0px"></div>
+<h3>原生js上传（前台监控上传进度）</h3>
+<div style="margin: 15px 0px 0px 15px;">
+    <input type="file" id="file" name="file" />
+    <button type="button" class="layui-btn layui-btn-sm" id="customUpload">上传</button>
+
+    <div style="margin: 15px 0px 0px 0px;"></div>
+    <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="uploadProgressBar1">
+        <div class="layui-progress-bar" lay-percent="0%"></div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script>
+    layui.use(["layer", "form", "upload", "jquery", "element"], function () {
+        // 注意：为了动态显示进度条，必须加载element组件
+        var layer = layui.layer, upload = layui.upload, $ = layui.jquery, element = layui.element;
+
+        upload.render({
+            accept: "file",
+            elem: "#addFile",
+            auto: false,   //关闭文件自动上传
+            bindAction: "#upload", //文件上传触发按钮
+            url: "upload",
+            data: {
+                scopeType: 1,
+                scopeId: 5,
+                appCatagory: 1
+            },//设置上传时携带的参数，后端可以用 String appCatagory = request.getParameter("appCatagory");接收
+            progress: function (value) {//上传进度回调 value进度值
+                console.log(value);
+                element.progress('uploadProgressBar', value + '%')//设置页面进度条
+            },
+            before: function (obj) {
+                var intId = setInterval(function () {
+                    // getUploadStatus(intId);
+                    $.post("getUploadProgress", function (res) {
+                        let percent = (res.readBytes / res.allBytes) * 100;
+                        percent = percent.toFixed(2);
+                        element.progress('uploadProgressBar', percent + '%')//设置页面进度条
+                        if (res.readBytes == res.allBytes) {
+                            element.progress('uploadProgressBar', '100%')
+                            clearInterval(intId);
+                        }
+
+                    });
+                }, 500); //每秒向服务端获取一次当前上传进度情况
+            },
+            done: function (res, index, upload) {
+                console.log(res);
+            },
+            error: function (res) {
+
+            }
+        });
+
+        $("#customUpload").on("click", function () {
+            //获取文件筐的文件集合
+            let files = document.getElementById("file").files;
+            //创建FormData对象
+            let formData = new FormData();
+            //添加第一个文件到FormData
+            formData.append("file", files[0]);
+            //添加普通数据
+            formData.append("name", "Jonny");
+            //创建异步对象
+            let xhr = new XMLHttpRequest();
+            //打开连接
+            xhr.open('POST', 'upload', true);
+            //监听上传事件
+            if (xhr.upload) {
+                //监听上传属性的上传事件,每次上传事件都会执行 progressHandlingFunction
+                xhr.upload.addEventListener('progress', progressHandlingFunction, false);
+                //xhr.upload.progress = function(){}            也可以
+            }
+            //执行上传
+            xhr.send(formData);
+
+            //上传监听
+            function progressHandlingFunction(event) {
+                event.total;        //获取上传文件的总大小
+                event.loaded;        //获取已经上传的文件大小
+                //获取进度的百分比值
+                let percent = (event.loaded / event.total) * 100;
+                //四舍五入保留两位小数
+                percent = percent.toFixed(2);
+                element.progress('uploadProgressBar1', percent + '%')//设置页面进度条
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+server:
+  port: 8001
+wx:
+  message:
+    appId: xxx
+    appSecret: xxx
+    token: xxx
+    aesKey: xxx

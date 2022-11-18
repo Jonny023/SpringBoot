@@ -1,0 +1,10 @@
+rocketmq:
+  nameServer: 127.0.0.1:9876
+  producer:
+    group: ${spring.application.name}
+    send-message-timeout: 300000 #发送时间超时时间
+    retry-times-when-send-async-failed: 0 #异步消息发送失败重试次数
+    retry-times-when-send-failed: 2 #消息发送失败后的最大重试次数
+    compress-message-body-threshold: 4096 #消息Body超过多大开始压缩（Consumer收到消息会自动解压缩），单位字节
+    max-message-size: 4194304  #消息最大容量
+    retry-next-server: true

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springbootdynamicdatasourceck.domain.mapper.Event1Mapper">
+
+    <select id="list" resultType="com.example.springbootdynamicdatasourceck.domain.entity.Event">
+        select si, browser_name, user_id, os_version, event_time
+        from dwd_web_elem_event_logs
+        order by event_time desc limit 10
+    </select>
+</mapper>

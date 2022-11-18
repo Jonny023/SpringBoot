@@ -1,0 +1,36 @@
+{
+  "groups": [
+    {
+      "name": "redisson",
+      "type": "com.jonny.config.RedissonProperties",
+      "sourceType": "com.jonny.config.RedissonProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "redisson.host",
+      "type": "java.lang.String",
+      "defaultValue": "localhost",
+      "description": "redis server ip."
+    },
+    {
+      "name": "redisson.port",
+      "type": "java.lang.String",
+      "defaultValue": "6379",
+      "description": "redis server port."
+    },
+    {
+      "name": "redisson.database",
+      "type": "java.lang.Integer",
+      "defaultValue": 0,
+      "description": "redis database range 0-15."
+    },
+    {
+      "name": "redisson.password",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "redis password."
+    }
+  ],
+  "hints": []
+}

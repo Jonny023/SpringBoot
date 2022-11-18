@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+baidu:
+  ocr:
+    appId: xxxxx
+    apiKey: xxxxx
+    secretKey: xxxxx
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB

@@ -1,0 +1,39 @@
+#支付宝支付
+ali:
+  pay:
+    open: true
+    #支付网关
+    url: https://openapi.alipay.com/gateway.do
+    appId:
+    privateKey:
+    format: JSON
+    charset: UTF-8
+    publicKey:
+    signType: RSA2
+    notifyUrl: http://127.0.0.1:8080/back/ali_pay
+    version: 1.0
+    timeoutExpress: 30m
+    #调用函数
+    method: alipay.trade.app.pay
+    platform:
+      publicKey:
+    indexPath: # 支付中途退出返回地址
+
+# 微信支付
+wechat:
+  pay:
+    open: true
+    notifyUrl: http://127.0.0.1:8080/mini_wechat_pay
+    merchantId:
+    merchantSerialNumber:
+    merchantPrivateKey:
+    apiV3Key:
+    appId:
+    createUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi
+    timeoutExpress: 30
+    closeUrlPrefix: https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/
+    closeUrlSuffix: /close
+    h5:
+      createUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/h5
+    native:
+      createUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/native

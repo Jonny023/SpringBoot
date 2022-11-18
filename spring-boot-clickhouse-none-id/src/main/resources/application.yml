@@ -1,0 +1,33 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+spring:
+  jackson:
+    time-zone: GMT+8
+  application:
+    name: clickhouse
+  datasource:
+    ck:
+      jdbc-url: jdbc:clickhouse://localhost:9090/daas_user_logs
+      username: web
+      password: 123
+      driver-class-name: ru.yandex.clickhouse.ClickHouseDriver
+      connection-timeout: 20000
+      maximum-pool-size: 5
+  jpa:
+    hibernate:
+      ddl-auto: none # update
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  # 防止警告提示
+  data:
+    redis:
+      repositories:
+        enabled: false
+    elasticsearch:
+      repositories:
+        enabled: false

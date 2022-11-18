@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://10.113.74.178:3306/check?serverTimezone=Asia/Shanghai&useAffectedRows=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true
+      username: root
+      password: 123456
+
+  # redis配置
+  redis:
+    database: 2
+    host: 10.113.74.35
+    password:
+    port: 6379
+
+# swagger
+knife4j:
+  # 开启增强配置，此配置可配置ignoreParameters忽略参数
+  enable: true
+  # 开启生产环境屏蔽
+  production: false
+  basic:
+    enable: true
+    # Basic认证用户名
+    username: test
+    # Basic认证密码
+    password: 14432214-fcfd-4e9c-b71c-dc3453d97454
+
+web:
+  #前端部署路径
+  resource-locations: file:D://dist/

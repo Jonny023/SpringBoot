@@ -1,0 +1,14 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: spring-boot-rabbitmq-producer
+  rabbitmq:
+    # 集群地址，用逗号分隔
+    addresses: 192.168.5.233:5672
+    connection-timeout: 15000
+    # 使用启用消息确认模式
+    publisher-confirms: true
+    username: admin
+    password: admin
+    virtual-host: /

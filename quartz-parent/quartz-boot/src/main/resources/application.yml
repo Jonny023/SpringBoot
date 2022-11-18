@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: quartz-boot
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      master:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/quartz_boot?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&serverTimezone=Asia/Shanghai
+        username: root
+        password: root
+        initial-size: 2
+        min-idle: 5
+        max-active: 10
+        max-wait: 5000
+        validationQuery: SELECT 1
+        test-on-borrow: false
+        test-while-idle: true
+        time-between-eviction-runs-millis: 18800
+      web-stat-filter:
+        enabled: true
+        exclusions: js,gif,jpg,png,css,ico,/druid/*
+      stat-view-servlet:
+        enabled: true
+        login-username: root
+        login-password: root

@@ -1,0 +1,51 @@
+spring:
+  redis:
+    database: 1
+    cluster:
+      nodes:
+        - localhost:26379
+    password: 123456
+    timeout: 10000
+    lettuce:
+      pool:
+        max-idle: 10
+        min-idle: 0
+        max-active: 10
+        max-wait: -1
+    redisson:
+      file: classpath:redisson.yaml
+      config:
+        clusterServersConfig:
+          idleConnectionTimeout: 10000
+          connectTimeout: 10000
+          timeout: 3000
+          retryAttempts: 3
+          retryInterval: 1500
+          failedSlaveReconnectionInterval: 3000
+          failedSlaveCheckInterval: 60000
+          password: 123456
+          subscriptionsPerConnection: 5
+          clientName: null
+          loadBalancer: !<org.redisson.connection.balancer.RoundRobinLoadBalancer> {}
+          subscriptionConnectionMinimumIdleSize: 1
+          subscriptionConnectionPoolSize: 50
+          slaveConnectionMinimumIdleSize: 24
+          slaveConnectionPoolSize: 64
+          masterConnectionMinimumIdleSize: 24
+          masterConnectionPoolSize: 64
+          readMode: "SLAVE"
+          subscriptionMode: "SLAVE"
+          nodeAddresses:
+          - "redis://localhost:26379"
+          scanInterval: 2000
+          pingConnectionInterval: 1000
+          keepAlive: false
+          tcpNoDelay: false
+        threads: 16
+        nettyThreads: 32
+        codec: !<org.redisson.codec.MarshallingCodec> {}
+        transportMode: "NIO"
+redis:
+  cache:
+    expire:
+      minutes: 60

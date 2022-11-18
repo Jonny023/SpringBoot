@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+allprojects {
+    group 'org.example'
+    version '1.0'
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.huaweicloud.com/repository/maven/" }
+        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+    }
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+}
+
+ext {
+    hutoolVersion = 'cn.hutool:hutool-all:5.7.7'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: io.spring.gradle.dependencymanagement.DependencyManagementPlugin
+
+    buildscript {
+        ext {
+            springBootVersion = '2.1.6.RELEASE'
+        }
+        repositories {
+            mavenCentral()
+        }
+        dependencies {
+            classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.huaweicloud.com/repository/maven/" }
+        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+    }
+
+    dependencyManagement {
+        dependencies {
+            dependency this.ext.hutoolVersion
+        }
+    }
+}
+
+//test {
+//    useJUnitPlatform()
+//}

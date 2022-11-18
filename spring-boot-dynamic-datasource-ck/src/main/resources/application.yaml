@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dynamic:
+      primary: ck1
+      strict: false #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      datasource:
+        ck1:
+          url: jdbc:clickhouse://127.0.0.1:8123/daas_user_logs?distributed_product_mode=global
+          driver: ru.yandex.clickhouse.ClickHouseDriver
+          username: root
+          password: 123456
+        ck2:
+          url: jdbc:clickhouse://127.0.0.1:8123/daas_user_logs?distributed_product_mode=global
+          driver: ru.yandex.clickhouse.ClickHouseDriver
+          username: root
+          password: 123456
+
+#mybatis-plus的相关配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+
+logging:
+  level:
+    ru.yandex.clickhouse: debug

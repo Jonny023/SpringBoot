@@ -1,0 +1,23 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: docker-nacos
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.56.101:8848
+#        namespace: 1d7caa28-e11e-4263-8f30-05c772b28dce
+    inetutils:
+      #      ignored-interfaces: # 忽略网卡，eth.*，正则表达式
+      #        - lo.*
+      #        - docker*
+      #      preferred-networks: ${discovery.server-ip}    # 选择符合前缀的IP作为服务注册IP，discovery.server-ip就是你的公网IP
+      preferred-networks: 192.168.*   # 首选网络地址，可以写具体的地址，也可也写正则
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+feign:
+  okhttp:
+    enabled: true
