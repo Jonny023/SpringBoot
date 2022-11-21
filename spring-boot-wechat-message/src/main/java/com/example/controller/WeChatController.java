@@ -27,6 +27,7 @@ public class WeChatController {
 
     /**
      * 接入token验证
+     * 非必选项（若消息要回调可以配置此接口）
      *
      * @param signature 微信加密签名，signature结合了开发者填写的 token 参数和请求中的 timestamp 参数、nonce参数。
      * @param timestamp 时间戳

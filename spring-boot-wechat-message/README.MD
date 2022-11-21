@@ -14,9 +14,11 @@
 </dependency>
 ```
 
-#### token校验
+#### token校验（非必选项）
 
 > 访问地址：http://localhost:port/api/wx/checkToken，微信填写服务地址需要校验公网域名，填入公网/api/wx/checkToken完整地址
+>
+> 此配置消息推送回调校验，增加业务处理，没有业务需要则不用配置
 
 ```java
 package com.example.controller;
@@ -60,3 +62,12 @@ public class WeChatController {
 }
 
 ```
+
+
+
+
+
+### 微信消息推送踩坑
+
+* `thing.DATA`消息key限制长度20字符，若用它作为备注需要控制字符长度
+* 服务器回调为非必选，回调是为了结合业务处理

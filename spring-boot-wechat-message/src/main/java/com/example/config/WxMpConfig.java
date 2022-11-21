@@ -21,16 +21,16 @@ public class WxMpConfig {
 
 	private String appId;
 	private String appSecret;
-	private String token;
-	private String aesKey;
+	//private String token;
+	//private String aesKey;
 
 	@Bean
 	public WxMpDefaultConfigImpl wxMpDefaultConfigImpl() {
 		WxMpDefaultConfigImpl config = new WxMpDefaultConfigImpl();
 		config.setAppId(appId);
 		config.setSecret(appSecret);
-		config.setToken(token);
-		config.setAesKey(aesKey);
+		//config.setToken(token);
+		//config.setAesKey(aesKey);
 		return config;
 	}
 
