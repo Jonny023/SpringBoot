@@ -24,7 +24,7 @@
         <redis-starter.version>2.1.8.RELEASE</redis-starter.version>
         <knife4j.version>2.0.8</knife4j.version>
         <guava.version>20.0</guava.version>
-        <pagehelper.version>5.2.1</pagehelper.version>
+        <pagehelper.version>5.3.1</pagehelper.version>
         <joda-time.version>2.10.10</joda-time.version>
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
         <mybatis-plus-generator.version>3.2.0</mybatis-plus-generator.version>
