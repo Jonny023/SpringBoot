@@ -1,0 +1,15 @@
+server:
+  port: 808
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.example.springbootmssql.entity
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://localhost:1433;databaseName=test;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=test;encrypt=false
+    username: sa
+    password: Abc12345

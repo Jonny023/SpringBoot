@@ -1,0 +1,26 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootmssql.mapper.UserMapper">
+
+    <sql id = "sql">
+        SELECT * FROM "user"
+    </sql>
+
+    <select id="listPage" resultType="com.example.springbootmssql.entity.User">
+        <if test="ids != null and ids.size() > 0">
+            <foreach collection="ids" item="list" index="index">
+                <if test="index > 0">
+                    UNION
+                </if>
+                <include refid="sql"></include>
+                <where>
+                    id IN
+                    <foreach collection="list" item="id" open="(" close=")" separator=",">
+                            #{id}
+                    </foreach>
+                </where>
+            </foreach>
+        </if>
+    </select>
+</mapper>
