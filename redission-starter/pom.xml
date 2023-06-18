@@ -9,7 +9,7 @@
     <version>1.0</version>
 
     <properties>
-        <autoconfigure.version>2.0.0.RELEASE</autoconfigure.version>
+        <autoconfigure.version>2.5.15</autoconfigure.version>
         <redisson-client.version>3.16.1</redisson-client.version>
     </properties>
 
