@@ -49,6 +49,17 @@
             <version>33.1.0-jre</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls-poi</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.freemarker</groupId>
@@ -129,6 +140,7 @@
                     <include>**/*.xml</include>
                     <include>**/*.ftl</include>
                     <include>**/*.ftl</include>
+                    <include>templates/*</include>
                     <include>**/img/**</include>
                     <include>**/*.properties</include>
                 </includes>
