@@ -34,6 +34,7 @@ public class DemoController {
     public void test2(HttpServletResponse response, HttpServletRequest request) throws Exception {
 
         response.setCharacterEncoding("utf-8");
+        response.setContentType("application/pdf");
         OutputStream out = response.getOutputStream();
         Writer writer = null;
         ByteArrayOutputStream outStream = null;
