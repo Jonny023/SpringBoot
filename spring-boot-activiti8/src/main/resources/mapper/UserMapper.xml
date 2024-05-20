@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.mapper.UserMapper">
+
+    <update id="update">
+        <foreach collection="tasks" item="task" separator=";">
+            update ACT_RU_TASK
+            <set>
+                <if test="task.name != null and task.name != ''">
+                    NAME_ = #{task.name},
+                </if>
+                <if test="task.description != null">
+                    DESCRIPTION_ = #{task.description},
+                </if>
+            </set>
+            where ID_ = #{task.id}
+        </foreach>
+    </update>
+</mapper>
