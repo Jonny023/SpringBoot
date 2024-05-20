@@ -9,7 +9,7 @@
 ### 说明
 
 * activiti7开始默认整合了spring security，需要配置，否则报错
-  * 若报错又手动添加UserDetailsService的bean，可以手动引入spring-boot-starter-security依赖
+  * 若启动报错又不想手动添加UserDetailsService的bean，可以手动引入spring-boot-starter-security依赖，他会自动装配UserDetailsService
     * pom配置
     ```xml
     <dependency>
@@ -17,7 +17,7 @@
           <artifactId>activiti-spring-boot-starter</artifactId>
           <version>8.4.0</version>
       </dependency>
-
+    
       <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-security</artifactId>
