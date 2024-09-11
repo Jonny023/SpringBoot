@@ -1,16 +1,16 @@
 package org.example.controller;
 
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
+import org.example.domain.entity.SysUser;
+import org.example.domain.request.UserPageReq;
 import org.example.domain.vo.R;
 import org.example.domain.vo.UserVO;
 import org.example.excel.annotation.ExcelExport;
 import org.example.excel.annotation.ExcelImport;
 import org.example.excel.handler.export.ExportFileNameHandler;
 import org.example.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +38,16 @@ public class ExcelController {
             List<UserVO> list
     ) {
         return R.ok(list);
+    }
+
+    @PostMapping("/user/list")
+    public R<PageInfo<SysUser>> page(@RequestBody UserPageReq req) {
+        return R.ok(userService.page(req));
+    }
+
+    @GetMapping("/user/batchExport")
+    public R<PageInfo<SysUser>> batchExport() {
+        userService.exportUsers();
+        return R.ok();
     }
 }

@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class R<T> implements Serializable {
 
     private static final int SUCCESS_CODE = 200;
+    private static final String SUCCESS_MESSAGE = "成功";
     private static final int ERROR_CODE = 500;
 
     @Serial
@@ -43,6 +44,13 @@ public class R<T> implements Serializable {
         this.data = data;
     }
 
+    public static <T> R<T> ok() {
+        R<T> result = new R<>();
+        result.code = SUCCESS_CODE;
+        result.message = "成功";
+        return result;
+    }
+
     public R(int code, String message) {
         this.code = code;
         this.message = message;
@@ -51,6 +59,7 @@ public class R<T> implements Serializable {
     public static <T> R<T> ok(T data) {
         return new R<>(data);
     }
+
 
     public boolean isSuccess() {
         return SUCCESS_CODE == code;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.mapper.UserMapper">
+
+    <select id="userList" fetchSize="-2147483648" resultType="org.example.domain.entity.SysUser">
+        SELECT * FROM user
+        <where>
+            <if test="req.isExport != null and req.isExport">
+                AND id > #{req.id}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+</mapper>
