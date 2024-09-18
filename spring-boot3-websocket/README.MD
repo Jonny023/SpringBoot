@@ -1,0 +1,41 @@
+# springboot + websocket集群（redis发布订阅）
+
+> 通过redis发布订阅实现websocket集群session共享
+
+* 访问地址：http://localhost:80/index.html
+
+### 要实现websocket集群，需要解决以下几个问题
+1. redis发布订阅
+2. nginx负载均衡
+    >    nginx集群配置
+    ```shell
+    http {
+        upstream backend {
+          server 127.0.0.1:81;
+          server 127.0.0.1:82;
+        }
+        server {
+          listen 80;
+          server_name 127.0.0.1;
+          location / {
+            proxy_pass http://backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+          }
+        }
+    }
+    ```
+3.当所有服务都挂掉的情况下，需要重试，不然页面消息不会变
+4.服务端每隔一分钟过出现java.io.EOFException: null异常，网上说是nginx超时
+    * 可以参考：[地址](https://zhangyuliang1994.github.io/nginx-websocket%E8%BF%9E%E6%8E%A5%E9%94%99%E8%AF%AF-java-io-EOFException-null/index.html)
+
+### 发送消息
+
+```bash
+curl -d "msg=好啊&username=admin" "http://127.0.0.1:80/msg/send"
+```
