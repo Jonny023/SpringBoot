@@ -4,7 +4,7 @@
 
 * 访问地址：http://localhost:80/index.html
 
-### 要实现websocket集群，需要解决以下几个问题
+### 要实现websocket集群，需要注意几个问题
 1. redis发布订阅
 2. nginx负载均衡
     >    nginx集群配置
