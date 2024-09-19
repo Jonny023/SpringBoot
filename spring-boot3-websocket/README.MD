@@ -39,6 +39,7 @@
 ```bash
 curl -d "msg=好啊&username=admin" "http://127.0.0.1:80/msg/send"
 ```
+<<<<<<< HEAD
 
 ## SSL
 
@@ -70,3 +71,5 @@ server:
 # 注意
 
 * wss访问使用自签证证书，访问需要配置域名，ip:port无法访问，用postman可以连接，浏览器不行，要么配置hosts，要么配置nginx
+=======
+>>>>>>> bb4e4f0a6b1541a7f17b3b187f9369c38948d575
