@@ -30,7 +30,7 @@
         }
     }
     ```
-    3.当所有服务都挂掉的情况下，需要重试，不然页面消息不会变
+    3.当所有服务都挂掉的情况下，需要重试，不然页面消息不会变，同4也可以在服务端使用心跳检测工具
     4.服务端每隔一分钟过出现java.io.EOFException: null异常，网上说是nginx超时
     * 可以参考：[地址](https://zhangyuliang1994.github.io/nginx-websocket%E8%BF%9E%E6%8E%A5%E9%94%99%E8%AF%AF-java-io-EOFException-null/index.html)
 
@@ -39,7 +39,11 @@
 ```bash
 curl -d "msg=好啊&username=admin" "http://127.0.0.1:80/msg/send"
 ```
-<<<<<<< HEAD
+
+
+
+
+
 
 ## SSL
 
@@ -71,5 +75,3 @@ server:
 # 注意
 
 * wss访问使用自签证证书，访问需要配置域名，ip:port无法访问，用postman可以连接，浏览器不行，要么配置hosts，要么配置nginx
-=======
->>>>>>> bb4e4f0a6b1541a7f17b3b187f9369c38948d575
