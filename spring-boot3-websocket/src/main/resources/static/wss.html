@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    <title>测试</title>
+</head>
+<body>
+
+
+<div id="app">
+    <div class="dashboard-container">
+        <div class="dashboard-text">消息内容: {{ responseData }}</div>
+        <div>连接状态: {{ connectionStatus }}</div>
+        <button @click="manualReconnect">手动重连</button>
+        <button @click="sendTestMessage">发送测试消息</button>
+    </div>
+</div>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/3.4.30/vue.global.prod.js"></script>
+<script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            return {
+                websocket: null,
+                responseData: null,
+                connectionStatus: '未连接',
+                reconnectTimeout: null,
+                maxReconnectAttempts: 5,
+                currentReconnectAttempts: 0,
+                baseReconnectDelay: 1000,
+                maxReconnectDelay: 30000,
+                isWriting: false
+            }
+        },
+        created() {
+            console.log("created");
+            this.initWebSocket();
+        },
+        unmounted() {
+            this.cleanUp();
+        },
+        methods: {
+            initWebSocket() {
+                if (this.websocket && this.websocket.readyState !== WebSocket.CLOSED) {
+                    console.log('WebSocket 已经存在或正在连接中');
+                    return;
+                }
+
+                const wsUri = "wss://my.com/websocket/server/admin";
+                this.websocket = new WebSocket(wsUri);
+                this.connectionStatus = '正在连接...';
+
+                this.websocket.onopen = this.wsOnOpen;
+                this.websocket.onmessage = this.wsOnMessage;
+                this.websocket.onerror = this.wsOnError;
+                this.websocket.onclose = this.wsOnClose;
+            },
+            wsOnOpen() {
+                console.log('WebSocket连接已打开');
+                this.connectionStatus = '已连接';
+                this.currentReconnectAttempts = 0;
+                clearTimeout(this.reconnectTimeout);
+                let actions = {"用户账号": "admin"};
+                this.wsSend(JSON.stringify(actions));
+            },
+            wsOnError(error) {
+                console.error('WebSocket错误:', error);
+                this.connectionStatus = '连接错误';
+            },
+            wsOnMessage(e) {
+                const receiveData = e.data;
+                this.responseData = receiveData;
+            },
+            wsSend(data) {
+                if (this.isWriting) {
+                    console.log('WebSocket正在发送数据，请稍后再试');
+                    return;
+                }
+
+                if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
+                    this.isWriting = true;
+                    try {
+                        this.websocket.send(data);
+                    } catch (error) {
+                        console.error('发送数据时发生错误:', error);
+                    } finally {
+                        this.isWriting = false;
+                    }
+                } else {
+                    console.log('WebSocket未连接，无法发送数据');
+                    this.connectionStatus = '未连接，尝试重新连接';
+                    this.reconnect();
+                }
+            },
+            wsOnClose(e) {
+                console.log('WebSocket连接关闭', e);
+                this.connectionStatus = '连接已关闭';
+                this.reconnect();
+            },
+            reconnect() {
+                if (this.currentReconnectAttempts < this.maxReconnectAttempts) {
+                    this.currentReconnectAttempts++;
+                    console.log(`尝试重新连接... 第 ${this.currentReconnectAttempts} 次`);
+                    this.connectionStatus = `正在重新连接... 第 ${this.currentReconnectAttempts} 次`;
+
+                    const delay = Math.min(
+                        this.maxReconnectDelay,
+                        this.baseReconnectDelay * Math.pow(2, this.currentReconnectAttempts - 1)
+                    );
+
+                    this.reconnectTimeout = setTimeout(() => {
+                        this.initWebSocket();
+                    }, delay);
+                } else {
+                    console.log('达到最大重连次数，停止重连');
+                    this.connectionStatus = '重连失败，请手动重试';
+                }
+            },
+            cleanUp() {
+                if (this.websocket) {
+                    this.websocket.close();
+                }
+                clearTimeout(this.reconnectTimeout);
+            },
+            manualReconnect() {
+                this.cleanUp();
+                this.currentReconnectAttempts = 0;
+                this.initWebSocket();
+            },
+            sendTestMessage() {
+                this.wsSend(JSON.stringify({type: "test", message: "这是一条测试消息"}));
+            }
+        }
+    }).mount('#app');
+</script>
+</body>
+</html>
