@@ -23,7 +23,7 @@ public class PhoneCodeAuthHandler extends AuthenticationHandler {
         PhoneCodeRequest req = (PhoneCodeRequest) request;
         if (this.verify(req.getCode())) {
             User user = userService.findByPhone(req.getPhone());
-            if (Objects.isNull(user) || Objects.equals("13000000000", user.getPhone())) {
+            if (Objects.isNull(user) || !Objects.equals("13000000000", user.getPhone())) {
                 return R.error("手机号错误");
             }
             String token = JwtUtil.createToken(user.getId(), user.getUsername());
