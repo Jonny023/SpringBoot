@@ -1,8 +1,10 @@
 package com.example.domain.model;
 
+import com.alibaba.excel.write.handler.CellWriteHandler;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Jonny
@@ -15,13 +17,18 @@ import java.util.Collection;
 public class ExportSimpleData {
 
     /**
+     * 自定义处理器：单元格合并、背景色等
+     */
+    private List<CellWriteHandler> cellWriteHandlers;
+
+    /**
      * 类型
      */
     @NonNull
     private Class<?> clazz;
 
     /**
-     * 数据行
+     * 数据行 List<List<Object>>
      */
     @NonNull
     private Collection<?> data;

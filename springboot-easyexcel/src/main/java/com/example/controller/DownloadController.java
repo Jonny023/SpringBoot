@@ -1,11 +1,12 @@
 package com.example.controller;
 
 import com.example.domain.model.ExportData;
-import com.example.domain.model.ExportFixedAndDynamicData;
 import com.example.domain.model.ExportSimpleData;
+import com.example.domain.model.merge.CellBackgroundWriteHandler;
 import com.example.domain.model.merge.MergeCellWriteHandler;
+import com.example.domain.model.merge.RowBackgroundWriteHandler;
 import com.example.domain.vo.DataDemo;
-import com.example.service.DynamicExcelService;
+import com.example.service.ExcelService;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ import java.util.List;
 public class DownloadController {
 
     @Resource
-    private DynamicExcelService excelService;
+    private ExcelService excelService;
 
     /**
      * 复杂动态表头导出
@@ -43,16 +44,16 @@ public class DownloadController {
     @GetMapping("/fix_dynamic")
     public void download() {
         List<List<String>> dynamicHead = builderHeader1();
-        ExportFixedAndDynamicData data = ExportFixedAndDynamicData.builder()
+        ExportData data = ExportData.builder()
                 .excelName("固定表头+动态表头数据")
                 .cellWriteHandlers(Lists.newArrayList(new MergeCellWriteHandler()))
-                .dynamicHead(dynamicHead)
+                .head(dynamicHead)
                 .data(getDataList()).build();
         excelService.exportFixedAndDynamicHead(data);
     }
 
     /**
-     * 简单固定表头导出
+     * 简单固定表头导出(依赖实体类注解)
      */
     @GetMapping("/simple")
     public void exportSimple() {
@@ -63,6 +64,58 @@ public class DownloadController {
                 .sheetName("学生成绩")
                 .data(builderData()).build();
         excelService.exportSimple(data);
+    }
+
+    /**
+     * 单元格样式
+     */
+    @GetMapping("/cellStyle")
+    public void cellStyle() {
+        List<List<String>> head = Lists.newArrayList();
+        head.add(Lists.newArrayList("学号"));
+        head.add(Lists.newArrayList("姓名"));
+        head.add(Lists.newArrayList("平均成绩"));
+
+        List<List<Object>> dataList = Lists.newArrayList();
+        dataList.add(Lists.newArrayList("A001", "张三", null));
+        dataList.add(Lists.newArrayList("A002", "小李", new BigDecimal("59")));
+        dataList.add(Lists.newArrayList("A003", "小王", new BigDecimal("72")));
+        dataList.add(Lists.newArrayList("A004", "小周", new BigDecimal("66")));
+        dataList.add(Lists.newArrayList("A005", "小邓", new BigDecimal("44")));
+
+        ExportData data = ExportData.builder()
+                .excelName("单元格背景色")
+                .cellWriteHandlers(Lists.newArrayList(new CellBackgroundWriteHandler()))
+                .head(head)
+                .data(dataList).build();
+        excelService.exportFixedAndDynamicHead(data);
+    }
+
+    /**
+     * 设置行样式
+     */
+    @GetMapping("/rowBg")
+    public void rowBg() {
+        List<List<String>> head = Lists.newArrayList();
+        head.add(Lists.newArrayList("学号"));
+        head.add(Lists.newArrayList("姓名"));
+        head.add(Lists.newArrayList("平均成绩"));
+
+        List<List<Object>> dataList = Lists.newArrayList();
+        dataList.add(Lists.newArrayList("A001", "张三", new BigDecimal("88")));
+        dataList.add(Lists.newArrayList("A002", "小李", new BigDecimal("59")));
+        dataList.add(Lists.newArrayList("A003", "小王", new BigDecimal("72")));
+        dataList.add(Lists.newArrayList("A004", "小周", new BigDecimal("66")));
+        dataList.add(Lists.newArrayList("A005", "小郑", new BigDecimal("44")));
+        dataList.add(Lists.newArrayList("A006", "小涛", new BigDecimal("44")));
+        dataList.add(Lists.newArrayList("A007", "小强", new BigDecimal("44")));
+
+        ExportData data = ExportData.builder()
+                .excelName("单元格背景色")
+                .cellWriteHandlers(Lists.newArrayList(new RowBackgroundWriteHandler()))
+                .head(head)
+                .data(dataList).build();
+        excelService.exportFixedAndDynamicHead(data);
     }
 
     private List<DataDemo> builderData() {
