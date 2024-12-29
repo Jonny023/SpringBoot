@@ -29,8 +29,28 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.16</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
+
+        <!-- https://wenhao.github.io/jpa-spec/ -->
+        <dependency>
+            <groupId>com.github.wenhao</groupId>
+            <artifactId>jpa-spec</artifactId>
+            <version>3.2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.33</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

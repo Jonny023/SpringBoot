@@ -26,7 +26,7 @@ import java.util.Objects;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactoryPrimary",
         transactionManagerRef = "transactionManagerPrimary",
-        basePackages = {"com.example.springbootjpadruid.repository.primary"}) //设置Repository所在位置
+        basePackages = {"com.example.springbootjpadruid.repository.primary"}) // 设置Repository所在位置
 public class PrimaryJpaConfig {
 
     @Autowired
@@ -41,13 +41,13 @@ public class PrimaryJpaConfig {
     private DataSource primaryDataSource;
 
 
-
     @Primary
     @Bean(name = "entityManagerPrimary")
     public EntityManager entityManager(org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder builder) {
         return SharedEntityManagerCreator.createSharedEntityManager(Objects.requireNonNull(entityManagerFactoryPrimary(builder).getObject()));
     }
 
+    @SuppressWarnings("all")
     @Primary
     @Bean(name = "entityManagerFactoryPrimary")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryPrimary(org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder builder) {
@@ -55,7 +55,7 @@ public class PrimaryJpaConfig {
                 .dataSource(primaryDataSource)// 设置数据源
                 .properties(jpaProperties.getProperties())// 设置jpa配置
                 .properties(getVendorProperties())// 设置hibernate配置
-                .packages("com.example.springbootjpadruid.entity.primary") //设置实体类所在位置
+                .packages("com.example.springbootjpadruid.domain.entity.primary") // 设置实体类所在位置
                 .persistenceUnit("primaryPersistenceUnit")// 设置持久化单元名，用于@PersistenceContext注解获取EntityManager时指定数据源
                 .build();
     }

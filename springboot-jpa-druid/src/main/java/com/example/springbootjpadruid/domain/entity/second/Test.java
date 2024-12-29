@@ -1,4 +1,4 @@
-package com.example.springbootjpadruid.entity.second;
+package com.example.springbootjpadruid.domain.entity.second;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

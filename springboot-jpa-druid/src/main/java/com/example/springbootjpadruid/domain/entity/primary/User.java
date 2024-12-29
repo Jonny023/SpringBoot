@@ -1,4 +1,4 @@
-package com.example.springbootjpadruid.entity.primary;
+package com.example.springbootjpadruid.domain.entity.primary;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -19,4 +19,8 @@ public class User {
     private Long id;
 
     private String username;
+
+    private Integer age;
+
+    private String address;
 }

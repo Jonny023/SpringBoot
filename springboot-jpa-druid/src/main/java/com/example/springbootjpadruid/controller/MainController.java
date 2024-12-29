@@ -1,7 +1,6 @@
 package com.example.springbootjpadruid.controller;
 
-import com.example.springbootjpadruid.entity.primary.User;
-import com.example.springbootjpadruid.entity.second.Test;
+import com.example.springbootjpadruid.domain.entity.second.Test;
 import com.example.springbootjpadruid.repository.primary.UserRepository;
 import com.example.springbootjpadruid.repository.second.TestRepository;
 import org.springframework.transaction.annotation.Transactional;

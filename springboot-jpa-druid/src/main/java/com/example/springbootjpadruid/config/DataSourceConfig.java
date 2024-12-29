@@ -16,16 +16,16 @@ public class DataSourceConfig {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(DataSourceConfig.class);
 
     @Primary
-    @Bean(value = "primaryDataSource",initMethod = "init")
-    @ConfigurationProperties("spring.datasource.druid.primary") //标红为yml文件中数据源路径:primary
-    public DataSource dataSourceOne(){
+    @Bean(value = "primaryDataSource", initMethod = "init")
+    @ConfigurationProperties("spring.datasource.druid.primary") // 标红为yml文件中数据源路径:primary
+    public DataSource dataSourceOne() {
         log.info("Init DataSourceOne");
         return DruidDataSourceBuilder.create().build();
     }
 
-    @Bean(value = "secondDataSource",initMethod = "init")
-    @ConfigurationProperties("spring.datasource.druid.secondary")//标红为yml文件中数据源路径：secondary
-    public DataSource dataSourceTwo(){
+    @Bean(value = "secondDataSource", initMethod = "init")
+    @ConfigurationProperties("spring.datasource.druid.secondary")// 标红为yml文件中数据源路径：secondary
+    public DataSource dataSourceTwo() {
         log.info("Init DataSourceTwo");
         return DruidDataSourceBuilder.create().build();
     }

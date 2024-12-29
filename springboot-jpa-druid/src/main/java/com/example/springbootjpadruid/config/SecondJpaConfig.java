@@ -25,7 +25,7 @@ import java.util.Objects;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactorySecond",
         transactionManagerRef = "transactionManagerSecond",
-        basePackages = {"com.example.springbootjpadruid.repository.second"}) //设置Repository所在位置
+        basePackages = {"com.example.springbootjpadruid.repository.second"}) // 设置Repository所在位置
 public class SecondJpaConfig {
 
     @Autowired
@@ -43,13 +43,16 @@ public class SecondJpaConfig {
         return SharedEntityManagerCreator.createSharedEntityManager(Objects.requireNonNull(entityManagerFactorySecond(builder).getObject()));
     }
 
+    @SuppressWarnings("all")
     @Bean(name = "entityManagerFactorySecond")
     public LocalContainerEntityManagerFactoryBean entityManagerFactorySecond(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(secondDataSource)
-                .properties(jpaProperties.getProperties())// 设置jpa配置
+                // 设置jpa配置
+                .properties(jpaProperties.getProperties())
                 .properties(getVendorProperties())
-                .packages("com.example.springbootjpadruid.entity.second") //设置实体类所在位置
+                // 设置实体类所在位置
+                .packages("com.example.springbootjpadruid.domain.entity.second")
                 .persistenceUnit("secondPersistenceUnit")
                 .build();
     }
