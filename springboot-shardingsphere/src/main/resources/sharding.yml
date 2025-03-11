@@ -1,0 +1,45 @@
+dataSources:
+  db1:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/db1?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  db2:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/db2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+
+rules:
+  - !SHARDING
+    tables:
+      orders:
+        # 库和dataSources.db1..db2对应，表也要和库里面分表的序号对应
+        # actualDataNodes: db${1..2}.orders_${0..1}
+        actualDataNodes: db1.orders_0,db2.orders_1
+        databaseStrategy:
+          standard:
+            shardingColumn: user_id
+            shardingAlgorithmName: database_inline
+        tableStrategy:
+          standard:
+            shardingColumn: user_id
+            shardingAlgorithmName: table_inline
+
+    shardingAlgorithms:
+      database_inline:
+        type: INLINE
+        props:
+          # 分多少个库模上分库的数量，若序号为0开始直接取模，若从1开始要取模+1
+          # algorithm-expression: db${user_id % 2 + 1}
+          algorithm-expression: 'db${user_id % 2 == 0 ? 1 : 2}'
+      table_inline:
+        type: INLINE
+        props:
+          # 分表也要模上分表的总个数
+          algorithm-expression: orders_${user_id % 2}
+# 开启shardingsphere执行sql日志
+props:
+  sql-show: true

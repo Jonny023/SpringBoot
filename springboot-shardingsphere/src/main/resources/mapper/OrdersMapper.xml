@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootshardingsphere.mapper.OrderMapper">
+
+    <select id="listPage" parameterType="com.example.springbootshardingsphere.domain.request.OrderRequest">
+        select * from orders
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                <bind name="keyword" value="'%' + orderNo + '%'"/>
+                AND order_no LIKE #{keyword}
+            </if>
+        </where>
+    </select>
+</mapper>

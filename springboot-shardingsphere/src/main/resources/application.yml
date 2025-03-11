@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driverClassName: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:sharding.yml
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+pagehelper:
+  helper-dialect: mysql
+  auto-dialect: true
+  support-methods-arguments: true
+  reasonable: true
