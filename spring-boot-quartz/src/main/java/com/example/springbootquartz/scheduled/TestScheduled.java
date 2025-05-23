@@ -11,7 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
- * 测试
+ * @author Jonny
+ * @description: 测试任务
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
@@ -28,12 +29,13 @@ public class TestScheduled extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         try {
+            log.info("线程池：{}", Thread.currentThread().getName());
             log.info("------------------start------------------");
             testService.hello();
             log.info(context.getScheduler().getSchedulerInstanceId());
             log.info("------------------stop------------------");
         } catch (Exception e) {
-            log.error("{}", e);
+            log.error("", e);
             JobExecutionException jobExecutionException = new JobExecutionException(e);
             // 这个工作将立即重新开始
             jobExecutionException.setRefireImmediately(true);

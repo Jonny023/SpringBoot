@@ -17,9 +17,9 @@ import javax.sql.DataSource;
 public class DataSourceConfig {
 
     @Primary
-    @Bean(value = "primaryDataSource",initMethod = "init")
+    @Bean(value = "primaryDataSource", initMethod = "init")
     @ConfigurationProperties("spring.datasource.druid.master")
-    public DataSource dataSourceOne(){
+    public DataSource dataSourceOne() {
         return DruidDataSourceBuilder.create().build();
     }
 }

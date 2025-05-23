@@ -22,8 +22,7 @@ public class SchedulerConfig {
 
     /**
      * 调度器
-     * @return
-     * @throws Exception
+     * @return Scheduler
      */
     @Bean
     public Scheduler scheduler() throws Exception {
@@ -32,8 +31,7 @@ public class SchedulerConfig {
 
     /**
      * Scheduler工厂类
-     * @return
-     * @throws IOException
+     * @return SchedulerFactoryBean
      */
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean() throws IOException {
@@ -43,14 +41,14 @@ public class SchedulerConfig {
         factory.setApplicationContextSchedulerContextKey("applicationContext");
         factory.setQuartzProperties(quartzProperties());
         factory.setTaskExecutor(schedulerThreadPool());
-        factory.setStartupDelay(5);//延迟5s执行
+        //延迟5s执行
+        factory.setStartupDelay(5);
         return factory;
     }
 
     /**
      * 加载配置属性
-     * @return
-     * @throws IOException
+     * @return Properties
      */
     @Bean
     public Properties quartzProperties() throws IOException {
@@ -62,7 +60,7 @@ public class SchedulerConfig {
 
     /**
      * schedule配置线程池
-     * @return
+     * @return Executor
      */
     @Bean
     public Executor schedulerThreadPool() {
