@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AI</title>
+
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js"></script>
+
+    <!-- highlight.js & marked -->
+    <!-- highlight.js & marked -->
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/lib/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/build/languages/javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/styles/github.min.css">
+
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <!-- 样式优化 -->
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 15px;
+            background-color: #f0f2f5;
+        }
+
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            min-height: 80vh;
+        }
+
+        .chat-header {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #409eff;
+            margin-bottom: 1rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            scroll-behavior: smooth;
+        }
+
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .user-header {
+            justify-content: flex-end;
+            margin-right: 0.5rem;
+        }
+
+        .ai-header {
+            justify-content: flex-start;
+            margin-left: 0.5rem;
+        }
+
+        .message-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .user-avatar {
+            background: #409eff;
+            color: white;
+        }
+
+        .ai-avatar {
+            background: #f1f3f5;
+            color: #333;
+            margin-right: 0.5rem;
+        }
+
+        .message-name {
+            font-weight: 600;
+        }
+
+        .user-name {
+            color: #409eff;
+        }
+
+        .ai-name {
+            color: #333;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            word-wrap: break-word;
+            font-size: 1rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: #409eff;
+            color: #fff;
+            border-bottom-right-radius: 0.25rem;
+            margin-left: auto;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background: #f1f3f5;
+            color: #333;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .message-copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            display: none;
+            transition: all 0.2s;
+        }
+
+        .ai-message .message-copy-btn {
+            color: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .user-message .message-copy-btn {
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .message-container:hover .message-copy-btn {
+            display: block;
+        }
+
+        .message-copy-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .message-content {
+            padding: 0 0.5rem;
+        }
+
+        .message-content h1 {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+        }
+
+        .message-content h2 {
+            font-size: 1.1rem;
+            margin: 0.8rem 0;
+        }
+
+        .message-content p {
+            margin: 0.6rem 0;
+        }
+
+        .message-content ul,
+        .message-content ol {
+            margin-left: 1.5rem;
+            padding-left: 1.2rem;
+        }
+
+        .message-content code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+
+        .code-block-wrapper {
+            position: relative;
+            margin: 0.8rem 0;
+        }
+
+        .message-content pre {
+            margin: 0;
+        }
+
+        .message-content pre code {
+            display: block;
+            padding: 1rem;
+            background: #282c34;
+            color: #fff;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        .code-copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+
+        .code-copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .input-area {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 0 0.5rem;
+            position: relative;
+            align-items: center;
+        }
+
+        .input-box {
+            flex: 1;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e6e6e6;
+            border-radius: 0.8rem;
+            font-size: 1rem;
+            resize: none;
+            background: #fff;
+            min-height: 64px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: #409eff;
+            box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.1);
+        }
+
+        .send-button {
+            width: 64px;
+            height: 64px;
+            background: #409eff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+        }
+
+        .send-button:hover {
+            background: #66b1ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(64, 158, 255, 0.4);
+        }
+
+        .send-button:disabled {
+            background: #a0cfff;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .send-icon {
+            font-size: 1.5rem;
+            transform: rotate(45deg);
+        }
+
+        .typing-cursor {
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #c8c8c8;
+            border-radius: 3px;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .chat-container {
+                padding: 1rem;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .input-area {
+                padding: 1rem 0 0;
+            }
+
+            .input-box {
+                padding: 0.8rem 1rem;
+            }
+
+            .send-button {
+                width: 56px;
+                height: 56px;
+            }
+        }
+
+        .message-content pre code {
+            display: block;
+            padding: 1rem;
+            background: #282c34;
+            color: #fff;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-break: break-all;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="chat-container">
+    <div class="chat-header">AI</div>
+
+    <div class="chat-messages" ref="chatHistory">
+        <div v-for="(msg, idx) in messages" :key="idx" class="message-container">
+            <!-- 消息头部 -->
+            <div :class="['message-header', msg.role === 'user' ? 'user-header' : 'ai-header']">
+                <div :class="['message-avatar', msg.role === 'user' ? 'user-avatar' : 'ai-avatar']">
+                    <i class="fa" :class="msg.role === 'user' ? 'fa-user' : 'fa-robot'"></i>
+                </div>
+                <div :class="['message-name', msg.role === 'user' ? 'user-name' : 'ai-name']">
+                    {{ msg.role === 'user' ? '我' : 'AI' }}
+                </div>
+            </div>
+
+            <!-- 消息内容 -->
+            <div :class="['message', msg.role === 'user' ? 'user-message' : 'ai-message']">
+                <button class="message-copy-btn" @click="copyMessage(msg.content)">
+                    <i class="fa fa-copy"></i> 复制
+                </button>
+                <div class="message-content" v-html="renderMarkdown(msg.content)"></div>
+            </div>
+        </div>
+
+        <div v-if="aiReply" class="message-container">
+            <!-- AI 响应头部 -->
+            <div class="message-header ai-header">
+                <div class="message-avatar ai-avatar">
+                    <i class="fa fa-robot"></i>
+                </div>
+                <div class="message-name ai-name">AI</div>
+            </div>
+
+            <!-- AI 响应内容 -->
+            <div class="message ai-message">
+                <div class="message-content">
+                    <span v-html="renderMarkdown(aiReply)"></span><span class="typing-cursor">▋</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <textarea v-model="question" class="input-box" placeholder="请输入你的问题..."
+                  @keyup.enter.prevent="sendQuestion" :disabled="loading" rows="3"></textarea>
+        <button @click="sendQuestion" class="send-button" :disabled="!question.trim() || loading">
+            <i class="fa fa-paper-plane send-icon" v-if="!loading"></i>
+            <i class="fa fa-spinner fa-spin" v-else></i>
+        </button>
+    </div>
+
+    <div id="toast" class="toast"></div>
+</div>
+
+<script>
+    // 1. 只设置 breaks
+    marked.setOptions({
+        breaks: true
+    });
+
+    // 2. 全局只创建一次 renderer
+    const renderer = new marked.Renderer();
+    renderer.code = function (code, language) {
+        let codeStr = '';
+        if (typeof code === 'string') {
+            codeStr = code;
+        } else if (code && typeof code === 'object') {
+            codeStr = code.text || code.raw || '';
+        } else if (code !== undefined && code !== null) {
+            codeStr = String(code);
+        }
+
+        let highlighted = codeStr;
+        if (language && hljs.getLanguage(language)) {
+            try {
+                highlighted = hljs.highlight(codeStr, {language}).value;
+            } catch (e) {
+                highlighted = codeStr;
+            }
+        } else {
+            try {
+                highlighted = hljs.highlightAuto(codeStr).value;
+            } catch (e) {
+                highlighted = codeStr;
+            }
+        }
+        // 复制按钮不传递内容
+        return `<div class="code-block-wrapper">
+      <button class="code-copy-btn" onclick="copyCodeBlock(this)">
+        <i class="fa fa-copy"></i> 复制
+      </button>
+      <pre><code class="hljs ${language ? language : ''}">${highlighted}</code></pre>
+    </div>`;
+    };
+
+    // 3. 在 marked 里全局设置 renderer
+    marked.use({renderer});
+
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                question: '',
+                messages: [],
+                aiReply: '',
+                loading: false
+            };
+        },
+        methods: {
+            async sendQuestion() {
+                if (!this.question.trim() || this.loading) return;
+
+                this.messages.push({
+                    role: 'user',
+                    content: this.question.trim()
+                });
+
+                const currentQuestion = this.question;
+                this.question = '';
+                this.loading = true;
+                this.aiReply = '';
+                this.scrollToBottom();
+
+                try {
+                    const response = await fetch(`/ai/chatStream?q=${encodeURIComponent(currentQuestion)}`);
+                    if (!response.ok) throw new Error('服务异常');
+
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let fullReply = '';
+
+                    while (true) {
+                        const {done, value} = await reader.read();
+                        if (done) break;
+                        const chunk = decoder.decode(value, {stream: true});
+                        fullReply += chunk;
+                        this.aiReply = fullReply;
+                        this.scrollToBottom();
+                    }
+
+                    this.messages.push({
+                        role: 'ai',
+                        content: fullReply
+                    });
+                    this.aiReply = '';
+                } catch (error) {
+                    console.error('Error:', error);
+                    this.messages.push({
+                        role: 'ai',
+                        content: '😢 抱歉，暂时无法回复，请稍后再试'
+                    });
+                } finally {
+                    this.loading = false;
+                }
+            },
+            scrollToBottom() {
+                this.$nextTick(() => {
+                    this.$refs.chatHistory.scrollTop = this.$refs.chatHistory.scrollHeight;
+                });
+            },
+            renderMarkdown(content) {
+                if (!content) return '';
+                try {
+                    return marked.parse(content);
+                } catch (error) {
+                    console.error('Markdown 解析错误:', error);
+                    return content || '';
+                }
+            },
+            copyMessage(content) {
+                this.copyToClipboard(content);
+            },
+            copyToClipboard(text) {
+                navigator.clipboard.writeText(text)
+                    .then(() => this.showToast('复制成功'))
+                    .catch(() => this.showToast('复制失败，请手动复制'));
+            },
+            showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+        },
+        mounted() {
+            // 添加全局函数用于代码块复制
+            window.copyCodeBlock = (button) => {
+                // 找到同级的 code 元素
+                const codeElem = button.parentElement.querySelector('pre code');
+                if (!codeElem) return;
+                const text = codeElem.innerText;
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '<i class="fa fa-check"></i> 已复制';
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                        }, 2000);
+                    })
+                    .catch(() => {
+                        // 你可以用 toast
+                        alert('复制失败，请手动复制');
+                    });
+            };
+        }
+    });
+</script>
+</body>
+</html>

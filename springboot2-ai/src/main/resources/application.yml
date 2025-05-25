@@ -1,0 +1,16 @@
+ai:
+  platform: deepseek
+  model: deepseek-chat
+  deepseek:
+    api-host: https://api.deepseek.com
+    api-key: 你的key
+
+# ai:
+#   platform: openai
+#   model: gpt-3.5-turbo  # 查看com.knuddels.jtokkit.api.ModelType
+#   openai:
+#     api-host: https://api.openai.com/
+#     api-key: 你的key
+#   okhttp: # 代理地址
+#     proxy-url: 127.0.0.1
+#     proxy-port: 17890
