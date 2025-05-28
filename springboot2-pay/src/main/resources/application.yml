@@ -1,0 +1,39 @@
+pay:
+  alipay:
+    app:
+      #应用ID
+      appID: xxxxx
+      #商户私钥
+      privateKey: xxxx
+      #支付宝公钥
+      publicKey: xxx
+      #签名方式
+      signType: RSA2
+      #支付宝开放安全地址
+      # 沙箱：https://openapi-sandbox.dl.alipaydev.com/gateway.do
+      # 生产：https://openapi.alipay.com/gateway.do
+      # gatewayUrl: https://openapi.alipay.com/gateway.do
+      gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+      #编码
+      charset: utf-8
+      #异步通知地址
+      notifyUrl: http://cpolar.top/alipay/notify
+      #订单完成后返回的页面
+      returnUrl: http://cpolar.top/alipay/return
+      #类型
+      format: JSON
+      #商户号
+      sysServiceProviderId: 2088721026598914
+---
+pay:
+  wxpay:
+    app:
+      appId:
+      merchantId:
+      #从微信商户平台下载的安全证书存放的路径、放在resources下面,切记一定要看看target目录下的class文件下有没有打包apiclient_cert.p12文件
+      privateKeyPath: classpath:pay/wxpay/private_key.pem
+      merchantSerialNumber:
+      apiV3Key:
+      #微信支付成功的异步通知接口
+      #notifyUrl: ${server.service-domain}/wxPay/v3/payNotify
+      notifyUrl:
